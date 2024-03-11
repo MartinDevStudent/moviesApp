@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 //import HomePage from "./pages/homePage";
 import MovieDetailsPage from "./pages/movieDetailsPage";
 import sample from "./stories/sampleData";
+import { MovieImage } from "./types/interfaces";
 
 const movies = [sample, sample, sample, sample, sample, sample, sample];
 
