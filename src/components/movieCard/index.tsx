@@ -29,7 +29,6 @@ interface MovieCardProps extends BaseMovie {
 }
 
 const MovieCard: React.FC<MovieCardProps> = (props) => {
-  console.log(props);
   const handleAddToFavourite = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     props.selectFavourite(props.id);
