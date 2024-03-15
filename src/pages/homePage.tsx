@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import MovieList from "../components/movieList";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
-import { FilterOption, ListedMovie } from "../types";
+import { FilterOption, ListedMovie } from "../types/interfaces";
 
 const styles = {
   root: {
@@ -20,7 +20,7 @@ const styles = {
 };
 
 const MovieListPage: React.FC = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<ListedMovie[]>([]);
   const [titleFilter, setTitleFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -38,6 +38,13 @@ const MovieListPage: React.FC = () => {
   const handleChange = (type: FilterOption, value: string) => {
     if (type === "title") setTitleFilter(value);
     else setGenreFilter(value);
+  };
+
+  const addToFavourites = (movieId: number) => {
+    const updatedMovies = movies.map((m: ListedMovie) =>
+      m.id === movieId ? { ...m, favourite: true } : m
+    );
+    setMovies(updatedMovies);
   };
 
   useEffect(() => {
@@ -64,7 +71,10 @@ const MovieListPage: React.FC = () => {
           <Header title={"Home Page"} />
         </Grid>
         <Grid item container spacing={5}>
-          <MovieList movies={displayedMovies}></MovieList>
+          <MovieList
+            movies={displayedMovies}
+            selectFavourite={addToFavourites}
+          />
         </Grid>
       </Grid>
       <Fab

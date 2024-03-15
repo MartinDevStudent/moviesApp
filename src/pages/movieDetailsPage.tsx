@@ -19,12 +19,7 @@ const styles = {
   },
 };
 
-interface MoviePageProps {
-  movie: MovieT;
-  images: MovieImage[];
-}
-
-const MoviePage: React.FC<MoviePageProps> = (props) => {
+const MoviePage: React.FC = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState<MovieT>();
   const [images, setImages] = useState<MovieImage[]>([]);
@@ -53,6 +48,7 @@ const MoviePage: React.FC<MoviePageProps> = (props) => {
       .then((res) => res.json())
       .then((json) => json.posters)
       .then((images) => {
+        console.log(images);
         setImages(images);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
