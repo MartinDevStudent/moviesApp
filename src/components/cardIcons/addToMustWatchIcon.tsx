@@ -9,7 +9,7 @@ const addToMustWatchIcon: React.FC<ListedMovie> = (movie) => {
 
   const onUserSelect = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    context.addToFavourites(movie);
+    context.addToMustWatch(movie);
   };
 
   return (
