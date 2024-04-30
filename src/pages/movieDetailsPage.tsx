@@ -3,11 +3,26 @@ import { useParams } from "react-router-dom";
 import MovieDetails from "../components/movieDetails";
 import { MovieT } from "../types/interfaces";
 import PageTemplate from "../components/templateMoviePage";
-import useMovie from "../hooks/useMovie";
+import { useQuery } from "react-query";
+import { getMovie } from "../api/tmdb-api";
+import Spinner from "../components/spinner";
 
 const MovieDetailsPage: React.FC = () => {
   const { id } = useParams();
-  const [movie] = useMovie(id ?? "");
+  const {
+    data: movie,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<MovieT, Error>(["movie", id], () => getMovie(id || ""));
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{(error as Error).message}</h1>;
+  }
 
   return (
     <>
