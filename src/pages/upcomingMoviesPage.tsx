@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { ListedMovie } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
-import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import PlaylistAddIcon from "../components/cardIcons/addToMustWatchIcon";
 
 const styles = {
   root: {
@@ -40,7 +40,7 @@ const UpcomingMoviesPage: FC = () => {
       title="Upcoming Movies"
       movies={movies}
       action={(movie) => {
-        return <AddToFavouritesIcon {...movie} />;
+        return <PlaylistAddIcon {...movie} />;
       }}
     />
   );
