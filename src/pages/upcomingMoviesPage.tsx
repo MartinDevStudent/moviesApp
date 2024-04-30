@@ -1,39 +1,26 @@
-import React, { useState, useEffect, FC } from "react";
+import { FC } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { ListedMovie } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import PlaylistAddIcon from "../components/cardIcons/addToMustWatchIcon";
-
-const styles = {
-  root: {
-    padding: "20px",
-  },
-  fab: {
-    marginTop: 8,
-    position: "fixed",
-    top: 2,
-    right: 2,
-  },
-};
+import { useQuery } from "react-query";
+import Spinner from "../components/spinner";
 
 const UpcomingMoviesPage: FC = () => {
-  const [movies, setMovies] = useState<ListedMovie[]>([]);
-  const favourites = movies.filter((m) => m.favourite);
-  localStorage.setItem("favourites", JSON.stringify(favourites));
-  // New function
-  const addToFavourites = (movieId: number) => {
-    const updatedMovies = movies.map((m: ListedMovie) =>
-      m.id === movieId ? { ...m, favourite: true } : m
-    );
-    setMovies(updatedMovies);
-  };
+  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>(
+    "upcoming",
+    getUpcomingMovies
+  );
 
-  useEffect(() => {
-    getUpcomingMovies().then((movies) => {
-      setMovies(movies);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const movies = data ? data : [];
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
 
   return (
     <PageTemplate
