@@ -9,7 +9,6 @@ import { MovieT } from "../types/interfaces";
 
 const WriteReviewPage: React.FC = (props) => {
   const location = useLocation();
-  console.log(location.state);
   const { movieId } = location.state;
   const {
     data: movie,

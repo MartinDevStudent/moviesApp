@@ -103,3 +103,13 @@ export const getPopularMovies = () => {
     .then((res) => res.json())
     .then((json) => json.results);
 };
+
+export const getActorsMovies = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US&page=1&with_cast=${id}`
+  )
+    .then((res) => res.json())
+    .then((json) => json.results);
+};
