@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../headerMovieList";
+import Header from "../headerShowList";
 import Grid from "@mui/material/Grid";
 
 const styles = {
