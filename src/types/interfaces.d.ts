@@ -75,11 +75,18 @@ export interface GenreData {
   }[];
 }
 
-interface DiscoverMovies {
+interface DiscoverShows {
   page: number;
   total_pages: number;
   total_results: number;
+}
+
+interface DiscoverMovies extends DiscoverShows {
   results: BaseMovie[];
+}
+
+interface DiscoverTvSeries extends DiscoverShows {
+  results: BaseTvSeries[];
 }
 
 export interface Review {
@@ -88,4 +95,31 @@ export interface Review {
   agree: boolean;
   rating: number;
   movieId: number;
+}
+
+export interface BaseTvSeries {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  origin_country: string[];
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  first_air_date: string;
+  name: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface TvSeriesListPageTemplateProps {
+  movies: ListedMovie[];
+  title: string;
+  action: (m: ListedMovie) => void;
+}
+
+export interface ListedTvSeries extends BaseTvSeries {
+  genre_ids: number[];
 }

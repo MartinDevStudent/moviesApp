@@ -1,17 +1,16 @@
-import React from "react";
 import PageTemplate from "../components/templateShowListPage";
-import { getMovies } from "../api/tmdb-api";
-import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
-import { DiscoverMovies, ListedMovie } from "../types/interfaces";
+import { DiscoverTvSeries, ListedTvSeries } from "../types/interfaces";
+import { getTvSeries } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
+import MovieFilterUI, {
+  genreFilter,
+  titleFilter,
+} from "../components/movieFilterUI";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
-import Movie from "../components/movieCard";
+import useFiltering from "../hooks/useFiltering";
 import { Grid } from "@mui/material";
+import TvSeriesCard from "../components/tvSeriesCard";
 
 const titleFiltering = {
   name: "title",
@@ -24,11 +23,12 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-    "discover",
-    getMovies
+const TvSeriesPage: React.FC = () => {
+  const { data, error, isLoading, isError } = useQuery<DiscoverTvSeries, Error>(
+    "discoverTvSeries",
+    getTvSeries
   );
+
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
@@ -51,19 +51,23 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data ? data.results : [];
-  const displayedMovies = filterFunction(movies);
+  const tvSeries = data ? data.results : [];
+  const displayedTvSeries = tvSeries.map((x) => ({
+    ...x,
+    release_date: x.first_air_date,
+  }));
+  //const displayedTvSeries = filterFunction(tvSeries);
 
   return (
     <>
-      <PageTemplate title="Discover Movies">
-        {displayedMovies.map((m: ListedMovie) => (
-          <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <Movie
-              key={m.id}
-              movie={m as ListedMovie}
-              action={(movie: ListedMovie) => {
-                return <AddToFavouritesIcon {...movie} />;
+      <PageTemplate title="Discover TV Series">
+        {displayedTvSeries.map((x: ListedTvSeries) => (
+          <Grid key={x.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <TvSeriesCard
+              key={x.id}
+              tvSeries={x}
+              action={(tvSeries: ListedTvSeries) => {
+                return <AddToFavouritesIcon {...tvSeries} />;
               }}
             />
           </Grid>
@@ -77,4 +81,4 @@ const HomePage: React.FC = () => {
     </>
   );
 };
-export default HomePage;
+export default TvSeriesPage;
