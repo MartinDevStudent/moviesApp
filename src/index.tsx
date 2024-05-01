@@ -13,6 +13,8 @@ import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import PopularMoviesPage from "./pages/popularMoviesPage";
 import ActorsMoviesPage from "./pages/actorsMoviesPage";
+import TvSeriesPage from "./pages/tvSeriesPage";
+import TvSeriesContextProvider from "./contexts/tvSeriesContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,20 +32,23 @@ const App = () => {
       <BrowserRouter>
         <SiteHeader />
         <MoviesContextProvider>
-          <Routes>
-            <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-            <Route path="/reviews/:id" element={<MovieReviewPage />} />
-            <Route
-              path="/movies/favourites"
-              element={<FavouriteMoviesPage />}
-            />
-            <Route path="/movies/popular" element={<PopularMoviesPage />} />
-            <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-            <Route path="/movies/:id" element={<MoviePage />} />
-            <Route path="/actors/:id" element={<ActorsMoviesPage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
+          <TvSeriesContextProvider>
+            <Routes>
+              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+              <Route path="/reviews/:id" element={<MovieReviewPage />} />
+              <Route
+                path="/movies/favourites"
+                element={<FavouriteMoviesPage />}
+              />
+              <Route path="/movies/popular" element={<PopularMoviesPage />} />
+              <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+              <Route path="/movies/:id" element={<MoviePage />} />
+              <Route path="/actors/:id" element={<ActorsMoviesPage />} />
+              <Route path="/tv-series" element={<TvSeriesPage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </TvSeriesContextProvider>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
