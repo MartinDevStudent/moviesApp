@@ -13,6 +13,11 @@ export const genreFilter = function (movie: ListedMovie, value: string) {
   return genreId > 0 ? movie.genre_ids.includes(genreId) : true;
 };
 
+export const voteFilter = function (movie: ListedMovie, value: string) {
+  const vote = Number(value);
+  return vote > 0 ? movie.vote_average > vote : true;
+};
+
 const styles = {
   root: {
     backgroundColor: "#bfbfbf",
@@ -29,12 +34,14 @@ interface MovieFilterUIProps {
   onFilterValuesChange: (f: string, s: string) => void;
   titleFilter: string;
   genreFilter: string;
+  votesFilter: string;
 }
 
 const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
   onFilterValuesChange,
   titleFilter,
   genreFilter,
+  votesFilter,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -57,6 +64,7 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
           onUserInput={onFilterValuesChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
+          votesFilter={votesFilter}
         />
       </Drawer>
     </>

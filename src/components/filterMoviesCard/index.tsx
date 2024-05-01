@@ -13,6 +13,7 @@ import { FilterOption, GenreData } from "../../types/interfaces";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
+import { Box, Slider } from "@mui/material";
 
 const styles = {
   root: {
@@ -25,12 +26,18 @@ const styles = {
     minWidth: 220,
     backgroundColor: "rgb(255, 255, 255)",
   },
+  slider: {
+    width: "210px",
+    marginLeft: "1em",
+    color: "red",
+  },
 };
 
 interface FilterMoviesCardProps {
   onUserInput: (f: FilterOption, s: string) => void; // Add this line
   titleFilter: string;
   genreFilter: string;
+  votesFilter: string;
 }
 
 const FilterMoviesCard: React.FC<FilterMoviesCardProps> = (props) => {
@@ -67,6 +74,10 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = (props) => {
     handleChange(e, "genre", e.target.value);
   };
 
+  function handleVoteChange(e: ChangeEvent<HTMLInputElement>) {
+    handleChange(e, "vote_average", e.target.value);
+  }
+
   return (
     <>
       <Card sx={styles.root} variant="outlined">
@@ -101,6 +112,22 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = (props) => {
               })}
             </Select>
           </FormControl>
+
+          <Box sx={styles.slider}>
+            <InputLabel id="average-vote-label">Average Vote</InputLabel>
+            <Slider
+              labelId="average-vote-label"
+              aria-label="Vote Average"
+              value={Number(props.votesFilter)}
+              onChange={handleVoteChange}
+              valueLabelDisplay="auto"
+              shiftStep={1}
+              step={1}
+              marks
+              min={0}
+              max={10}
+            />
+          </Box>
         </CardContent>
       </Card>
       <Card sx={styles.root} variant="outlined">

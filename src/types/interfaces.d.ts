@@ -54,7 +54,7 @@ export interface ListedMovie extends BaseMovie {
   genre_ids: number[];
 }
 
-export type FilterOption = "title" | "genre";
+export type FilterOption = "title" | "genre" | "vote_average";
 
 export interface MovieListPageTemplateProps {
   movies: ListedMovie[];
