@@ -10,7 +10,7 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
-import CastCarousel from "./CastCarousel";
+import CastCarousel from "../movieDetails/CastCarousel";
 
 const styles = {
   chipSet: {
@@ -32,7 +32,7 @@ const styles = {
   },
 };
 
-const MovieDetails: React.FC<MovieT> = (props) => {
+const TvSeriesDetails: React.FC<TvSeriesT> = (props) => {
   const movie = props;
   const [drawerOpen, setDrawerOpen] = useState(false); // New
 
@@ -57,16 +57,16 @@ const MovieDetails: React.FC<MovieT> = (props) => {
         ))}
       </Paper>
       <Paper component="ul" sx={styles.chipSet}>
-        <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
+        {/* <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
         <Chip
           icon={<MonetizationIcon />}
           label={`${movie.revenue.toLocaleString()}`}
-        />
+        /> */}
         <Chip
           icon={<StarRate />}
           label={`${movie.vote_average} (${movie.vote_count}`}
         />
-        <Chip label={`Released: ${movie.release_date}`} />
+        <Chip label={`Released: ${movie.first_air_date}`} />
       </Paper>
       <Fab
         color="secondary"
@@ -88,4 +88,4 @@ const MovieDetails: React.FC<MovieT> = (props) => {
     </>
   );
 };
-export default MovieDetails;
+export default TvSeriesDetails;

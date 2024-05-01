@@ -1,20 +1,21 @@
 import React from "react"; // replace existing react import
 import { useParams } from "react-router-dom";
 import MovieDetails from "../components/movieDetails";
-import { MovieImage, MovieT } from "../types/interfaces";
+import { MovieImage, TvSeriesT } from "../types/interfaces";
 import PageTemplate from "../components/templateMoviePage";
 import { useQuery } from "react-query";
-import { getMovie, getMovieImages } from "../api/tmdb-api";
+import { getMovieImages, getTvSeries } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
+import TvSeriesDetails from "../components/tvSeriesDetails";
 
-const MovieDetailsPage: React.FC = () => {
+const TvSeriesDetailsPage: React.FC = () => {
   const { id } = useParams();
   const {
-    data: movie,
+    data: tvSeries,
     error,
     isLoading,
     isError,
-  } = useQuery<MovieT, Error>(["movie", id], () => getMovie(id || ""));
+  } = useQuery<TvSeriesT, Error>(["tvSeries", id], () => getTvSeries(id || ""));
 
   const {
     data: images,
@@ -33,17 +34,17 @@ const MovieDetailsPage: React.FC = () => {
 
   return (
     <>
-      {movie ? (
+      {tvSeries ? (
         <>
-          <PageTemplate show={movie as MovieT} images={images!}>
-            <MovieDetails {...(movie as MovieT)} />
+          <PageTemplate tvSeries={tvSeries as TvSeriesT} images={images!}>
+            <TvSeriesDetails {...(tvSeries as TvSeriesT)} />
           </PageTemplate>
         </>
       ) : (
-        <p>Waiting for movie details</p>
+        <p>Waiting for tv series details</p>
       )}
     </>
   );
 };
 
-export default MovieDetailsPage;
+export default TvSeriesDetailsPage;

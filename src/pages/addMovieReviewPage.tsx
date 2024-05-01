@@ -27,7 +27,7 @@ const WriteReviewPage: React.FC = (props) => {
   return (
     <>
       {movie ? (
-        <PageTemplate movie={movie}>
+        <PageTemplate show={movie}>
           <ReviewForm {...movie} />
         </PageTemplate>
       ) : (

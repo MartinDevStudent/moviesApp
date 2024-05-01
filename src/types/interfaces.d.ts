@@ -123,3 +123,16 @@ export interface TvSeriesListPageTemplateProps {
 export interface ListedTvSeries extends BaseTvSeries {
   genre_ids: number[];
 }
+
+export interface TvSeriesT extends BaseTvSeries {
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  production_countries: {
+    name: string;
+  }[];
+  credits: {
+    cast: CastMember[];
+  };
+}

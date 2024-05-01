@@ -8,7 +8,7 @@ const MovieReviewPage: React.FC = () => {
     state: { movie, review },
   } = useLocation();
   return (
-    <PageTemplate movie={movie}>
+    <PageTemplate show={movie}>
       <MovieReview {...review} />
     </PageTemplate>
   );

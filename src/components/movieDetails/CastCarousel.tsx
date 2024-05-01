@@ -57,7 +57,7 @@ const CastCarousel: FC<CastCarouselProps> = (props) => {
     <div className="slider-container">
       <Slider {...settings}>
         {props.cast.map((actor) => (
-          <Link to={`/actors/${actor.id}`} state={actor.name}>
+          <Link key={actor.id} to={`/actors/${actor.id}`} state={actor.name}>
             <Card sx={styles.card}>
               <CardMedia
                 sx={styles.media}

@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { getMovieImages } from "../../api/tmdb-api";
-import { MovieImage, MovieT } from "../../types/interfaces";
+import { MovieImage, MovieT, TvSeriesT } from "../../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
 
@@ -21,30 +21,17 @@ const styles = {
 };
 
 interface TemplateMoviePageProps {
-  movie: MovieT;
+  show: MovieT | TvSeriesT;
+  images: MovieImage[];
   children: React.ReactElement;
 }
 
 const TemplateMoviePage: React.FC<TemplateMoviePageProps> = (props) => {
-  const { movie, children } = props;
-  const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>(
-    ["images", movie.id],
-    () => getMovieImages(movie.id)
-  );
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
-
-  const images = data as MovieImage[];
+  const { show, images, children } = props;
 
   return (
     <>
-      <MovieHeader {...movie} />
+      <MovieHeader {...show} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid item xs={3}>

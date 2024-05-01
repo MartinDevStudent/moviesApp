@@ -1,6 +1,6 @@
 import PageTemplate from "../components/templateShowListPage";
 import { DiscoverTvSeries, ListedTvSeries } from "../types/interfaces";
-import { getTvSeries } from "../api/tmdb-api";
+import { getTvSeriess } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import MovieFilterUI, {
@@ -26,7 +26,7 @@ const genreFiltering = {
 const TvSeriesPage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<DiscoverTvSeries, Error>(
     "discoverTvSeries",
-    getTvSeries
+    getTvSeriess
   );
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
