@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
-import { ListedMovie, MovieT } from "../../types/interfaces";
 import { Avatar } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { MoviesContext } from "../../contexts/moviesContext";
+import { TvSeriesContext } from "../../contexts/tvSeriesContext";
 
 const styles = {
   root: {
@@ -22,11 +23,20 @@ const styles = {
   },
 };
 
-const MovieHeader: React.FC<MovieT> = (props) => {
-  const movies: ListedMovie[] = JSON.parse(
-    localStorage.getItem("favourites") || "[]"
-  );
-  const isFavourite = movies.some((m) => m.id === props.id);
+interface ShowHeaderProps {
+  id: number;
+  title: string;
+  homepage: string;
+  tagline?: string;
+}
+
+const ShowHeader: React.FC<ShowHeaderProps> = (props) => {
+  const { favourites } =
+    props.tagline === undefined
+      ? useContext(TvSeriesContext)
+      : useContext(MoviesContext);
+
+  const isFavourite = favourites.some((id) => id === props.id);
 
   return (
     <Paper component="div" sx={styles.root}>
@@ -45,7 +55,7 @@ const MovieHeader: React.FC<MovieT> = (props) => {
           <HomeIcon color="primary" fontSize="large" />
         </a>
         <br />
-        <span>{`${props.tagline}`} </span>
+        <span>{`${props.tagline ?? ""}`} </span>
       </Typography>
       <IconButton aria-label="go forward">
         <ArrowForwardIcon color="primary" fontSize="large" />
@@ -54,4 +64,4 @@ const MovieHeader: React.FC<MovieT> = (props) => {
   );
 };
 
-export default MovieHeader;
+export default ShowHeader;

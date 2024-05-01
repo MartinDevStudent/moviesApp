@@ -12,8 +12,8 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router-dom";
-import { MoviesContext } from "../../contexts/moviesContext";
 import { ListedTvSeries } from "../../types/interfaces";
+import { TvSeriesContext } from "../../contexts/tvSeriesContext";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -30,7 +30,7 @@ interface TvSeriesCardProps {
 
 const TvSeriesCard: React.FC<TvSeriesCardProps> = (props) => {
   const tvSeries = { ...props.tvSeries, favourite: false, mustWatch: false };
-  const { favourites, mustWatch } = useContext(MoviesContext);
+  const { favourites, mustWatch } = useContext(TvSeriesContext);
 
   if (favourites.find((id) => id === tvSeries.id)) tvSeries.favourite = true;
   if (mustWatch.find((id) => id === tvSeries.id)) tvSeries.mustWatch = true;

@@ -1,10 +1,9 @@
 import React from "react"; // replace existing react import
 import { useParams } from "react-router-dom";
-import MovieDetails from "../components/movieDetails";
 import { MovieImage, TvSeriesT } from "../types/interfaces";
-import PageTemplate from "../components/templateMoviePage";
+import PageTemplate from "../components/templateShowPage";
 import { useQuery } from "react-query";
-import { getMovieImages, getTvSeries } from "../api/tmdb-api";
+import { getTvSeries, getTvSeriesImages } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import TvSeriesDetails from "../components/tvSeriesDetails";
 
@@ -22,7 +21,9 @@ const TvSeriesDetailsPage: React.FC = () => {
     error: imageError,
     isLoading: isLoadingImage,
     isError: isImageError,
-  } = useQuery<MovieImage[], Error>(["images", id], () => getMovieImages(id!));
+  } = useQuery<MovieImage[], Error>(["tv-series-images", id], () =>
+    getTvSeriesImages(id!)
+  );
 
   if (isLoading || isLoadingImage) {
     return <Spinner />;
@@ -36,7 +37,7 @@ const TvSeriesDetailsPage: React.FC = () => {
     <>
       {tvSeries ? (
         <>
-          <PageTemplate tvSeries={tvSeries as TvSeriesT} images={images!}>
+          <PageTemplate show={tvSeries as TvSeriesT} images={images!}>
             <TvSeriesDetails {...(tvSeries as TvSeriesT)} />
           </PageTemplate>
         </>

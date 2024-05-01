@@ -2,7 +2,7 @@ import React from "react"; // replace existing react import
 import { useParams } from "react-router-dom";
 import MovieDetails from "../components/movieDetails";
 import { MovieImage, MovieT } from "../types/interfaces";
-import PageTemplate from "../components/templateMoviePage";
+import PageTemplate from "../components/templateShowPage";
 import { useQuery } from "react-query";
 import { getMovie, getMovieImages } from "../api/tmdb-api";
 import Spinner from "../components/spinner";

@@ -1,5 +1,5 @@
 import React from "react";
-import PageTemplate from "../components/templateMoviePage";
+import PageTemplate from "../components/templateShowPage";
 import ReviewForm from "../components/reviewForm";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -27,7 +27,7 @@ const WriteReviewPage: React.FC = (props) => {
   return (
     <>
       {movie ? (
-        <PageTemplate show={movie}>
+        <PageTemplate show={movie} images={[]}>
           <ReviewForm {...movie} />
         </PageTemplate>
       ) : (

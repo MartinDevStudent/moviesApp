@@ -1,12 +1,9 @@
 import React from "react";
-import MovieHeader from "../headerMovie";
+import ShowHeader from "../showHeader";
 import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { getMovieImages } from "../../api/tmdb-api";
 import { MovieImage, MovieT, TvSeriesT } from "../../types/interfaces";
-import { useQuery } from "react-query";
-import Spinner from "../spinner";
 
 const styles = {
   gridListRoot: {
@@ -20,18 +17,20 @@ const styles = {
   },
 };
 
-interface TemplateMoviePageProps {
+interface TemplateShowPageProps {
   show: MovieT | TvSeriesT;
   images: MovieImage[];
   children: React.ReactElement;
 }
 
-const TemplateMoviePage: React.FC<TemplateMoviePageProps> = (props) => {
+const TemplateShowPage: React.FC<TemplateShowPageProps> = (props) => {
   const { show, images, children } = props;
+  const title = "name" in show ? show.name : show.title;
+  const homepage = "name" in show ? "/tv-series" : "/";
 
   return (
     <>
-      <MovieHeader {...show} />
+      <ShowHeader title={title} homepage={homepage} id={props.show.id} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid item xs={3}>
@@ -61,4 +60,4 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = (props) => {
   );
 };
 
-export default TemplateMoviePage;
+export default TemplateShowPage;
