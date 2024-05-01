@@ -29,6 +29,15 @@ export interface MovieT extends BaseMovie {
   production_countries: {
     name: string;
   }[];
+  credits: {
+    cast: CastMember[];
+  };
+}
+
+export interface CastMember {
+  id: number;
+  name: string;
+  profile_path: string;
 }
 
 export interface MovieImage {
