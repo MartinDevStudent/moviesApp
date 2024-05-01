@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateShowListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
-import { MovieT } from "../types/interfaces";
+import { ListedMovie, MovieT } from "../types/interfaces";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { Grid } from "@mui/material";
+import Movie from "../components/movieCard";
 
 const titleFiltering = {
   name: "title",
@@ -66,18 +68,22 @@ const FavouriteMoviesPage: React.FC = () => {
 
   return (
     <>
-      <PageTemplate
-        title="Favourite Movies"
-        movies={displayMovies}
-        action={(movie) => {
-          return (
-            <>
-              <RemoveFromFavourites {...movie} />
-              <WriteReview {...movie} />
-            </>
-          );
-        }}
-      />
+      <PageTemplate title="Favourite Movies">
+        {displayMovies.map((m: ListedMovie) => (
+          <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Movie
+              key={m.id}
+              movie={m as ListedMovie}
+              action={(movie: ListedMovie) => (
+                <>
+                  <RemoveFromFavourites {...movie} />
+                  <WriteReview {...movie} />
+                </>
+              )}
+            />
+          </Grid>
+        ))}
+      </PageTemplate>
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
