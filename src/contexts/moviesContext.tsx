@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ListedMovie, MovieT, Review } from "../types/interfaces";
+import { FantasyMovie, ListedMovie, MovieT, Review } from "../types/interfaces";
 
 interface MovieContextInterface {
   favourites: number[];
@@ -8,6 +8,8 @@ interface MovieContextInterface {
   mustWatch: number[];
   addToMustWatch: (movie: ListedMovie) => void;
   addReview: (movie: MovieT, review: Review) => void; // NEW
+  fantasyMovie?: FantasyMovie;
+  addFantasyMovie: (movie: FantasyMovie) => void;
 }
 const initialContextState: MovieContextInterface = {
   favourites: [],
@@ -24,6 +26,10 @@ const initialContextState: MovieContextInterface = {
   addToMustWatch: (movie) => {
     movie.id;
   },
+  fantasyMovie: undefined,
+  addFantasyMovie: (movie) => {
+    movie;
+  },
 };
 
 export const MoviesContext =
@@ -33,6 +39,8 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = (props) => {
   const [myReviews, setMyReviews] = useState<Review[]>([]);
   const [favourites, setFavourites] = useState<number[]>([]);
   const [mustWatch, setMustWatch] = useState<number[]>([]);
+  const [fantasyMovie, setFantasyMovie] =
+    useState<FantasyMovie | undefined>(undefined);
 
   const addToFavourites = (movie: ListedMovie) => {
     let updatedFavourites = [...favourites];
@@ -60,6 +68,10 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     setMyReviews({ ...myReviews, [movie.id]: review });
   };
 
+  const addFantasyMovie = (movie: FantasyMovie) => {
+    setFantasyMovie(movie);
+  };
+
   return (
     <MoviesContext.Provider
       value={{
@@ -69,6 +81,8 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = (props) => {
         mustWatch,
         addToMustWatch,
         addReview, // NEW
+        fantasyMovie,
+        addFantasyMovie,
       }}
     >
       {props.children}

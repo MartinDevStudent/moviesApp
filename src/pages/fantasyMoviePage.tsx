@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from "react"; // replace existing react import
-import { GenreData } from "../types/interfaces";
+import React, { ChangeEvent, useContext, useState } from "react"; // replace existing react import
+import { FantasyMovie, GenreData } from "../types/interfaces";
 import { useQuery } from "react-query";
 import { getGenres } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { MoviesContext } from "../contexts/moviesContext";
 
 const styles = {
   root: {
@@ -43,17 +44,9 @@ const styles = {
   },
 };
 
-interface FantasyMovie {
-  title: string;
-  overview: string;
-  releaseDate: string;
-  duration: number;
-  productionCompany: string;
-  genre: number;
-}
-
 const FantasyMoviePage: React.FC = () => {
   const navigate = useNavigate();
+  const context = useContext(MoviesContext);
   const [genre, setGenre] = useState(28);
   const [open, setOpen] = useState(false);
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
@@ -90,8 +83,9 @@ const FantasyMoviePage: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<FantasyMovie> = (data) => {
+    data.genre = genre;
+    context.addFantasyMovie(data);
     setOpen(true);
-    console.log({ ...data, genre });
   };
 
   if (isLoading) {

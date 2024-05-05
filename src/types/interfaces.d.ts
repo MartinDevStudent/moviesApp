@@ -136,3 +136,12 @@ export interface TvSeriesT extends BaseTvSeries {
     cast: CastMember[];
   };
 }
+
+interface FantasyMovie {
+  title: string;
+  overview: string;
+  releaseDate: string;
+  duration: number;
+  productionCompany: string;
+  genre: number;
+}
