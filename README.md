@@ -11,3 +11,4 @@ Features added
 - create tv series context
 - create tv series details page
 - Add filter for average vote
+- Create for for fantasy movie using reach hook form
