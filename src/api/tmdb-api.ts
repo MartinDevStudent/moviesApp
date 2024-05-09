@@ -84,14 +84,14 @@ export const getMovieReviews = (id: string | number) => {
     });
 };
 
-export const getUpcomingMovies = () => {
+export const getUpcomingMovies = (page: number) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/upcoming?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&page=1`
+    }&language=en-US&page=${page}`
   )
     .then((res) => res.json())
-    .then((json) => json.results);
+    .then((json) => json);
 };
 
 export const getPopularMovies = () => {
