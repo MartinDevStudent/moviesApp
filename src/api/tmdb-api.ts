@@ -94,14 +94,14 @@ export const getUpcomingMovies = (page: number) => {
     .then((json) => json);
 };
 
-export const getPopularMovies = () => {
+export const getPopularMovies = (page: number) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/popular?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&page=1`
+    }&language=en-US&page=${page}`
   )
     .then((res) => res.json())
-    .then((json) => json.results);
+    .then((json) => json);
 };
 
 export const getActorsMovies = (id: string | number) => {
