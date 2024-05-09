@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "../components/templateShowListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
@@ -8,11 +8,12 @@ import MovieFilterUI, {
   voteFilter,
 } from "../components/movieFilterUI";
 import { DiscoverMovies, ListedMovie } from "../types/interfaces";
-import { useQuery } from "react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import Movie from "../components/movieCard";
 import { Grid } from "@mui/material";
+import { ListPagination } from "../components/listPagination";
 
 const titleFiltering = {
   name: "title",
@@ -31,10 +32,12 @@ const voteFiltering = {
 };
 
 const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-    "discover",
-    getMovies
-  );
+  const [page, setPage] = useState<number>(1);
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>({
+    queryKey: ["discover", page],
+    queryFn: () => getMovies(page),
+    placeholderData: keepPreviousData,
+  });
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering, voteFiltering]
@@ -83,6 +86,7 @@ const HomePage: React.FC = () => {
         genreFilter={filterValues[1].value}
         votesFilter={filterValues[2].value}
       />
+      <ListPagination pageCount={data?.total_pages ?? 1} setPage={setPage} />
     </>
   );
 };
