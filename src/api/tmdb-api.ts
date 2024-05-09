@@ -168,3 +168,55 @@ export const getTvSeriesImages = (id: string | number) => {
       throw error;
     });
 };
+
+interface MovieSearchOptions {
+  keyword: string;
+  includeAdult?: boolean;
+  language?: string;
+  releaseYear?: number;
+  page?: number;
+  region?: string;
+  year?: number;
+}
+
+export const getMovieSearchResults = (options: MovieSearchOptions) => {
+  const optionsQueryString = buildOptionsQueryString(options);
+
+  return fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&query=${options.keyword}&page=${options.page}${optionsQueryString}`
+  )
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(
+          `Unable to fetch movies. Response status: ${response.status}`
+        );
+      return response.json();
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+function buildOptionsQueryString(options: MovieSearchOptions): string {
+  let queryString = "";
+
+  if (options.includeAdult !== undefined) {
+    queryString += `&include_adult=${options.includeAdult}`;
+  }
+  if (options.language !== undefined) {
+    queryString += `&language=${options.language}`;
+  }
+  if (options.releaseYear !== undefined) {
+    queryString += `&primary_release_year=${options.releaseYear}`;
+  }
+  if (options.region !== undefined) {
+    queryString += `&region=${options.region}`;
+  }
+  if (options.year !== undefined) {
+    queryString += `&year=${options.year}`;
+  }
+
+  return queryString;
+}
