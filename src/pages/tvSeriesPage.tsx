@@ -1,7 +1,7 @@
 import PageTemplate from "../components/templateShowListPage";
 import { DiscoverTvSeries, ListedTvSeries } from "../types/interfaces";
 import { getTvSeriess } from "../api/tmdb-api";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
 import MovieFilterUI, {
   genreFilter,
@@ -11,6 +11,8 @@ import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import useFiltering from "../hooks/useFiltering";
 import { Grid } from "@mui/material";
 import TvSeriesCard from "../components/tvSeriesCard";
+import { useState } from "react";
+import { ListPagination } from "../components/listPagination";
 
 const titleFiltering = {
   name: "title",
@@ -24,10 +26,12 @@ const genreFiltering = {
 };
 
 const TvSeriesPage: React.FC = () => {
+  const [page, setPage] = useState<number>(1);
   const { data, error, isLoading, isError } = useQuery<DiscoverTvSeries, Error>(
     {
-      queryKey: ["discoverTvSeries"],
-      queryFn: getTvSeriess,
+      queryKey: ["discoverTvSeries", page],
+      queryFn: () => getTvSeriess(page),
+      placeholderData: keepPreviousData,
     }
   );
 
@@ -80,6 +84,7 @@ const TvSeriesPage: React.FC = () => {
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
       />
+      <ListPagination pageCount={data?.total_pages ?? 1} setPage={setPage} />
     </>
   );
 };
