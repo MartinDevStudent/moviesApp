@@ -104,14 +104,14 @@ export const getPopularMovies = (page: number) => {
     .then((json) => json);
 };
 
-export const getActorsMovies = (id: string | number) => {
+export const getActorsMovies = (id: string | number, page: number) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&page=1&with_cast=${id}`
+    }&language=en-US&page=${page}&with_cast=${id}`
   )
     .then((res) => res.json())
-    .then((json) => json.results);
+    .then((json) => json);
 };
 
 export const getTvSeriess = (page: number) => {
