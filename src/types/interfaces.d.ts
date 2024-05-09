@@ -145,3 +145,13 @@ interface FantasyMovie {
   productionCompany: string;
   genre: number;
 }
+
+interface MovieSearchOptions {
+  keyword: string;
+  includeAdult: boolean;
+  language?: string;
+  releaseYear?: number;
+  page?: number;
+  region?: string;
+  year?: number;
+}
