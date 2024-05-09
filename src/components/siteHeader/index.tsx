@@ -38,6 +38,7 @@ const SiteHeader: React.FC = () => {
     { label: "Popular Movies", path: "/movies/popular" },
     { label: "TV Series", path: "/tv-series" },
     { label: "Create Fantasy Movie", path: "/fantasy-movie" },
+    { label: "Find Movie", path: "/find-movie" },
   ];
 
   const handleMenuSelect = (pageURL: string) => {
