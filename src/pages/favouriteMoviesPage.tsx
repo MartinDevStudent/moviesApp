@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import PageTemplate from "../components/templateShowListPage";
 import { MoviesContext } from "../contexts/moviesContext";
-import { useQueries } from "react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
@@ -38,14 +38,12 @@ const FavouriteMoviesPage: React.FC = () => {
   );
 
   // Create an array of queries and run them in parallel.
-  const favouriteMovieQueries = useQueries(
-    movieIds.map((movieId) => {
-      return {
-        queryKey: ["movie", movieId],
-        queryFn: () => getMovie(movieId.toString()),
-      };
-    })
-  );
+  const favouriteMovieQueries = useQueries({
+    queries: movieIds.map((movieId) => ({
+      queryKey: ["movie", movieId],
+      queryFn: () => getMovie(movieId.toString()),
+    })),
+  });
   // Check if any of the parallel queries is still loading.
   const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 

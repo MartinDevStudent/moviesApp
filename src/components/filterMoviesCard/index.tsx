@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { FilterOption, GenreData } from "../../types/interfaces";
 import { getGenres } from "../../api/tmdb-api";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "../spinner";
 import { Box, Slider } from "@mui/material";
 

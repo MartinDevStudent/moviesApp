@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { CastMember } from "../../types/interfaces";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";

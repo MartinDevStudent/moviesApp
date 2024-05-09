@@ -3,16 +3,16 @@ import PageTemplate from "../components/templateShowListPage";
 import { ListedMovie } from "../types/interfaces";
 import { getPopularMovies } from "../api/tmdb-api";
 import PlaylistAddIcon from "../components/cardIcons/addToMustWatchIcon";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
 import Movie from "../components/movieCard";
 import { Grid } from "@mui/material";
 
 const PopularMoviesPage: FC = () => {
-  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>(
-    "popular",
-    getPopularMovies
-  );
+  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>({
+    queryKey: ["popular"],
+    queryFn: getPopularMovies,
+  });
 
   const movies = data ? data : [];
 

@@ -3,16 +3,16 @@ import PageTemplate from "../components/templateShowListPage";
 import { ListedMovie } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import PlaylistAddIcon from "../components/cardIcons/addToMustWatchIcon";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
 import Movie from "../components/movieCard";
 import { Grid } from "@mui/material";
 
 const UpcomingMoviesPage: FC = () => {
-  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>(
-    "upcoming",
-    getUpcomingMovies
-  );
+  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>({
+    queryKey: ["upcoming"],
+    queryFn: getUpcomingMovies,
+  });
 
   const movies = data ? data : [];
 

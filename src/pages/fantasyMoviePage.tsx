@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useContext, useState } from "react"; // replace existing react import
 import { FantasyMovie, GenreData } from "../types/interfaces";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getGenres } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import ShowHeader from "../components/showHeader";
@@ -49,10 +49,10 @@ const FantasyMoviePage: React.FC = () => {
   const context = useContext(MoviesContext);
   const [genre, setGenre] = useState(28);
   const [open, setOpen] = useState(false);
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
-    "genres",
-    getGenres
-  );
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>({
+    queryKey: ["genres"],
+    queryFn: getGenres,
+  });
 
   const genres = data ? data.genres : [];
 

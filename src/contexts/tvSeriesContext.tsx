@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  ListedMovie,
-  ListedTvSeries,
-  MovieT,
-  Review,
-} from "../types/interfaces";
+import { ListedTvSeries, MovieT, Review } from "../types/interfaces";
 
 interface TvSeriesContextInterface {
   favourites: number[];

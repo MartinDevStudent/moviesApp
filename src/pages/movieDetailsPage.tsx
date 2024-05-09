@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import MovieDetails from "../components/movieDetails";
 import { MovieImage, MovieT } from "../types/interfaces";
 import PageTemplate from "../components/templateShowPage";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getMovie, getMovieImages } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 
@@ -14,14 +14,20 @@ const MovieDetailsPage: React.FC = () => {
     error,
     isLoading,
     isError,
-  } = useQuery<MovieT, Error>(["movie", id], () => getMovie(id || ""));
+  } = useQuery<MovieT, Error>({
+    queryKey: ["movie", id],
+    queryFn: () => getMovie(id || ""),
+  });
 
   const {
     data: images,
     error: imageError,
     isLoading: isLoadingImage,
     isError: isImageError,
-  } = useQuery<MovieImage[], Error>(["images", id], () => getMovieImages(id!));
+  } = useQuery<MovieImage[], Error>({
+    queryKey: ["images", id],
+    queryFn: () => getMovieImages(id!),
+  });
 
   if (isLoading || isLoadingImage) {
     return <Spinner />;

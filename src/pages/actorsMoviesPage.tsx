@@ -2,7 +2,7 @@ import { FC } from "react";
 import PageTemplate from "../components/templateShowListPage";
 import { ListedMovie } from "../types/interfaces";
 import PlaylistAddIcon from "../components/cardIcons/addToMustWatchIcon";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
 import { useLocation, useParams } from "react-router-dom";
 import { getActorsMovies } from "../api/tmdb-api";
@@ -13,10 +13,10 @@ const ActorsMoviesPage: FC = () => {
   const { id } = useParams();
   const location = useLocation();
   const name = location.state;
-  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>(
-    ["actor", id],
-    () => getActorsMovies(id!)
-  );
+  const { data, error, isLoading, isError } = useQuery<ListedMovie[], Error>({
+    queryKey: ["actor", id],
+    queryFn: () => getActorsMovies(id!),
+  });
 
   const movies = data ? data : [];
 

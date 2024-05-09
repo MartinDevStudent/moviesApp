@@ -2,12 +2,12 @@ import React from "react";
 import PageTemplate from "../components/templateShowPage";
 import ReviewForm from "../components/reviewForm";
 import { useLocation } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import { MovieT } from "../types/interfaces";
 
-const WriteReviewPage: React.FC = (props) => {
+const WriteReviewPage: React.FC = () => {
   const location = useLocation();
   const { movieId } = location.state;
   const {
@@ -15,7 +15,10 @@ const WriteReviewPage: React.FC = (props) => {
     error,
     isLoading,
     isError,
-  } = useQuery<MovieT, Error>(["movie", movieId], () => getMovie(movieId));
+  } = useQuery<MovieT, Error>({
+    queryKey: ["movie", movieId],
+    queryFn: () => getMovie(movieId),
+  });
 
   if (isLoading) {
     return <Spinner />;
