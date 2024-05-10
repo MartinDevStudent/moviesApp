@@ -10,9 +10,10 @@ import { Link } from "react-router-dom";
 import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 
-import { MovieT, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
+import { MovieReview, MovieT, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../spinner";
+import { getAwsMovieReviews } from "../../api/aws-api";
 
 const styles = {
   table: {
@@ -22,7 +23,7 @@ const styles = {
 
 const MovieReviews: React.FC<MovieT> = (props) => {
   const {
-    data: reviews,
+    data: reviewsData,
     error,
     isLoading,
     isError,
@@ -31,15 +32,29 @@ const MovieReviews: React.FC<MovieT> = (props) => {
     queryFn: () => getMovieReviews(props.id || ""),
   });
 
+  const {
+    data: awsReviews,
+    error: awsError,
+    isLoading: isAWSLoading,
+    isError: isAWSError,
+  } = useQuery<MovieReview[], Error>({
+    queryKey: ["movieReviews", "aws", props.id],
+    queryFn: () => getAwsMovieReviews(props.id),
+  });
+
   const movie = props;
 
-  if (isLoading) {
+  if (isLoading || isAWSLoading) {
     return <Spinner />;
   }
 
   if (isError) {
     return <h1>{(error as Error).message}</h1>;
   }
+
+  const reviews = awsReviews
+    ? reviewsData?.concat(convertAwsReviews(awsReviews))
+    : reviewsData;
 
   return (
     <TableContainer component={Paper}>
@@ -78,3 +93,14 @@ const MovieReviews: React.FC<MovieT> = (props) => {
 };
 
 export default MovieReviews;
+
+function convertAwsReviews(awsReviews: MovieReview[]): Review[] {
+  return awsReviews.map(
+    (x) =>
+      ({
+        id: x.movieId.toString(),
+        content: x.content,
+        author: x.reviewerName,
+      } as Review)
+  );
+}
