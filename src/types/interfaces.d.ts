@@ -155,3 +155,18 @@ interface MovieSearchOptions {
   region?: string;
   year?: number;
 }
+
+interface MovieReview {
+  movieId: number;
+  reviewerName: string;
+  reviewDate: Date;
+  content: string;
+  rating: 0 | 1 | 2 | 3 | 4 | 5;
+}
+
+interface CreateMovieReviewRequest {
+  movieId: number;
+  reviewerName: string;
+  content: string;
+  rating: 0 | 1 | 2 | 3 | 4 | 5;
+}
