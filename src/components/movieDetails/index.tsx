@@ -11,6 +11,7 @@ import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
 import CastCarousel from "./CastCarousel";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   chipSet: {
@@ -27,12 +28,18 @@ const styles = {
   },
   fab: {
     position: "fixed",
-    top: 50,
+    top: 70,
+    right: 150,
+  },
+  fabTwo: {
+    position: "fixed",
+    top: 70,
     right: 2,
   },
 };
 
 const MovieDetails: React.FC<MovieT> = (props) => {
+  const navigate = useNavigate();
   const movie = props;
   const [drawerOpen, setDrawerOpen] = useState(false); // New
 
@@ -76,6 +83,17 @@ const MovieDetails: React.FC<MovieT> = (props) => {
       >
         <NavigationIcon />
         Reviews
+      </Fab>
+      <Fab
+        color="primary"
+        variant="extended"
+        onClick={() =>
+          navigate("/reviews/form", { state: { movieId: movie.id } })
+        }
+        sx={styles.fabTwo}
+      >
+        <NavigationIcon />
+        Add Review
       </Fab>
       <Drawer
         anchor="top"
