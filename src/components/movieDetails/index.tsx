@@ -41,7 +41,7 @@ const styles = {
 const MovieDetails: React.FC<MovieT> = (props) => {
   const navigate = useNavigate();
   const movie = props;
-  const [drawerOpen, setDrawerOpen] = useState(false); // New
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>

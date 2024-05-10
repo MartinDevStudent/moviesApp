@@ -1,26 +1,41 @@
-import React, { useContext, useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { MoviesContext } from "../../contexts/moviesContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles";
 import ratings from "./ratingCategories";
-import { MovieT, Review } from "../../types/interfaces";
+import {
+  CreateMovieReviewRequest,
+  MovieT,
+  Review,
+} from "../../types/interfaces";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postMovieReview } from "../../api/aws-api";
+
+const queryClient = useQueryClient();
 
 const ReviewForm: React.FC<MovieT> = (props) => {
+  const mutation = useMutation({
+    mutationFn: (request: CreateMovieReviewRequest) => {
+      return postMovieReview(request);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["movieReviews", props.id] });
+    },
+  });
   const defaultValues = {
     defaultValues: {
       author: "",
       review: "",
       agree: false,
       rating: 3,
-      movieId: 0,
+      movieId: props.id,
     },
   };
 
@@ -32,9 +47,8 @@ const ReviewForm: React.FC<MovieT> = (props) => {
   } = useForm<Review>(defaultValues);
 
   const navigate = useNavigate();
-  const context = useContext(MoviesContext);
   const [rating, setRating] = useState(3);
-  const [open, setOpen] = useState(false); //NEW
+  const [open, setOpen] = useState(false);
 
   const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRating(Number(event.target.value));
@@ -45,10 +59,15 @@ const ReviewForm: React.FC<MovieT> = (props) => {
     navigate("/movies/favourites");
   };
 
-  const onSubmit: SubmitHandler<Review> = (review) => {
-    review.movieId = props.id;
-    review.rating = rating;
-    context.addReview(props, review);
+  const onSubmit: SubmitHandler<Review> = (data) => {
+    const request = {
+      movieId: Number(data.id),
+      reviewerName: data.author,
+      content: data.content,
+      rating: data.rating,
+    } as CreateMovieReviewRequest;
+
+    mutation.mutate(request);
     setOpen(true); // NEW
     // console.log(review);
   };

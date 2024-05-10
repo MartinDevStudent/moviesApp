@@ -68,6 +68,29 @@ export interface Review {
   author: string;
 }
 
+interface MovieReview {
+  movieId: number;
+  content: string;
+  reviewerName: string;
+  reviewDate: Date;
+  rating: Rating;
+}
+
+interface CreateMovieReviewRequest {
+  movieId: number;
+  reviewerName: string;
+  content: string;
+  rating: Rating;
+}
+
+enum Rating {
+  Excellent = 5,
+  Good = 4,
+  Average = 3,
+  Poor = 2,
+  Terrible = 1,
+}
+
 export interface GenreData {
   genres: {
     id: string;
@@ -154,19 +177,4 @@ interface MovieSearchOptions {
   page?: number;
   region?: string;
   year?: number;
-}
-
-interface MovieReview {
-  movieId: number;
-  reviewerName: string;
-  reviewDate: Date;
-  content: string;
-  rating: 0 | 1 | 2 | 3 | 4 | 5;
-}
-
-interface CreateMovieReviewRequest {
-  movieId: number;
-  reviewerName: string;
-  content: string;
-  rating: 0 | 1 | 2 | 3 | 4 | 5;
 }
