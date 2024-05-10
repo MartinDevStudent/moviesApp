@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,6 +11,8 @@ import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 
 import { MovieT, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "../spinner";
 
 const styles = {
   table: {
@@ -19,16 +21,25 @@ const styles = {
 };
 
 const MovieReviews: React.FC<MovieT> = (props) => {
-  // Use the MovieT type in the function signature
-  const [reviews, setReviews] = useState([]);
+  const {
+    data: reviews,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<Review[], Error>({
+    queryKey: ["movieReviews", props.id],
+    queryFn: () => getMovieReviews(props.id || ""),
+  });
 
   const movie = props;
-  useEffect(() => {
-    getMovieReviews(movie.id).then((reviews) => {
-      setReviews(reviews);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{(error as Error).message}</h1>;
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -41,7 +52,7 @@ const MovieReviews: React.FC<MovieT> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reviews.map((r: Review) => (
+          {reviews!.map((r: Review) => (
             <TableRow key={r.id}>
               <TableCell component="th" scope="row">
                 {r.author}
