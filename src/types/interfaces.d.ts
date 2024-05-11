@@ -160,7 +160,7 @@ export interface TvSeriesT extends BaseTvSeries {
   };
 }
 
-interface FantasyMovie {
+interface FantasyMovieRequest {
   title: string;
   overview: string;
   releaseDate: string;
