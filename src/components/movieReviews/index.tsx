@@ -11,7 +11,7 @@ import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 
 import { MovieReview, MovieT, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import Spinner from "../spinner";
 import { getAwsMovieReviews } from "../../api/aws-api";
 
@@ -21,44 +21,33 @@ const styles = {
   },
 };
 
-interface AwsReviewsResponse {
-  data: MovieReview[];
-}
-
 const MovieReviews: React.FC<MovieT> = (props) => {
-  const {
-    data: reviewsData,
-    error,
-    isLoading,
-    isError,
-  } = useQuery<Review[], Error>({
-    queryKey: ["movieReviews", props.id],
-    queryFn: () => getMovieReviews(props.id || ""),
-  });
-
-  const {
-    data: awsReviews,
-    error: awsError,
-    isLoading: isAWSLoading,
-    isError: isAWSError,
-  } = useQuery<AwsReviewsResponse, Error>({
-    queryKey: ["movieReviews", "aws", props.id],
-    queryFn: () => getAwsMovieReviews(props.id),
+  const [tmdb, aws] = useQueries({
+    queries: [
+      {
+        queryKey: ["movieReviews", props.id],
+        queryFn: () => getMovieReviews(props.id || ""),
+      },
+      {
+        queryKey: ["movieReviews", "aws", props.id],
+        queryFn: () => getAwsMovieReviews(props.id),
+      },
+    ],
   });
 
   const movie = props;
 
-  if (isLoading || isAWSLoading) {
+  if (tmdb.isLoading || aws.isLoading) {
     return <Spinner />;
   }
 
-  if (isError) {
-    return <h1>{(error as Error).message}</h1>;
+  if (tmdb.isError) {
+    return <h1>{(tmdb.error as Error).message}</h1>;
   }
 
-  const reviews = awsReviews
-    ? reviewsData?.concat(convertAwsReviews(awsReviews.data))
-    : reviewsData;
+  const reviews = aws.data
+    ? tmdb.data?.concat(convertAwsReviews(aws.data.data))
+    : tmdb.data;
 
   return (
     <TableContainer component={Paper}>

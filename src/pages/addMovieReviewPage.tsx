@@ -27,6 +27,7 @@ const WriteReviewPage: React.FC = () => {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
+
   return (
     <>
       {movie ? (
