@@ -1,7 +1,10 @@
-import { CreateMovieReviewRequest } from "../types/interfaces";
+//import { APIConfig } from "../../config";
+import { CreateMovieReviewRequest, LoginRequest } from "../types/interfaces";
 
 //const baseUrl = APIConfig.API.endpoints[0].endpoint;
-const baseUrl = "https://vbm10ys7fd.execute-api.eu-west-1.amazonaws.com/dev/";
+const baseUrl = "https://2xws75vn2d.execute-api.eu-west-1.amazonaws.com/dev/";
+const authBaseUrl =
+  "https://bou6hlnvba.execute-api.eu-west-1.amazonaws.com/prod/";
 
 export const getAwsMovieReviews = (id: number) => {
   return fetch(baseUrl + `movies/${id}/reviews`)
@@ -25,4 +28,20 @@ export const postMovieReview = (request: CreateMovieReviewRequest) => {
       "Content-type": "application/json; charset=UTF-8",
     },
   }).then((response) => response.json());
+};
+
+export const getToken = (request: LoginRequest) => {
+  return fetch(`${authBaseUrl}auth/signin`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify({ username: "userA", password: "passwA!1" }),
+    body: JSON.stringify(request),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      return json;
+    });
 };

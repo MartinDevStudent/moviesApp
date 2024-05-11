@@ -178,3 +178,8 @@ interface MovieSearchOptions {
   region?: string;
   year?: number;
 }
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
