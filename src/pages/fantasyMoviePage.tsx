@@ -96,7 +96,6 @@ const FantasyMoviePage: React.FC = () => {
 
   const handleSnackClose = () => {
     setOpen(false);
-    navigate("/movies/favourites");
   };
 
   const onSubmit: SubmitHandler<FantasyMovie> = (data) => {
