@@ -21,6 +21,10 @@ const styles = {
   },
 };
 
+interface AwsReviewsResponse {
+  data: MovieReview[];
+}
+
 const MovieReviews: React.FC<MovieT> = (props) => {
   const {
     data: reviewsData,
@@ -37,7 +41,7 @@ const MovieReviews: React.FC<MovieT> = (props) => {
     error: awsError,
     isLoading: isAWSLoading,
     isError: isAWSError,
-  } = useQuery<MovieReview[], Error>({
+  } = useQuery<AwsReviewsResponse, Error>({
     queryKey: ["movieReviews", "aws", props.id],
     queryFn: () => getAwsMovieReviews(props.id),
   });
@@ -53,7 +57,7 @@ const MovieReviews: React.FC<MovieT> = (props) => {
   }
 
   const reviews = awsReviews
-    ? reviewsData?.concat(convertAwsReviews(awsReviews))
+    ? reviewsData?.concat(convertAwsReviews(awsReviews.data))
     : reviewsData;
 
   return (
