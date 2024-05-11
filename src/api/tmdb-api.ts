@@ -79,7 +79,6 @@ export const getMovieReviews = (id: string | number) => {
   )
     .then((res) => res.json())
     .then((json) => {
-      // console.log(json.results);
       return json.results;
     });
 };

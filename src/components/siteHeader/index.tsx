@@ -35,7 +35,6 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader: React.FC = () => {
   const context = useContext(UserContext);
-  console.log(context);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -80,9 +79,18 @@ const SiteHeader: React.FC = () => {
           ) : (
             <></>
           )}
-          <MenuItem onClick={() => navigate("/login")} sx={styles.menuItem}>
-            Login
-          </MenuItem>
+          {context.username ? (
+            <MenuItem
+              onClick={() => context.addUsername("")}
+              sx={styles.menuItem}
+            >
+              Logout
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={() => navigate("/login")} sx={styles.menuItem}>
+              Login
+            </MenuItem>
+          )}
           <div>
             <Button
               sx={styles.button}

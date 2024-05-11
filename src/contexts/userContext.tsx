@@ -21,8 +21,6 @@ const UserContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     setUserName(username);
   };
 
-  console.log("username", username);
-
   return (
     <UserContext.Provider
       value={{
