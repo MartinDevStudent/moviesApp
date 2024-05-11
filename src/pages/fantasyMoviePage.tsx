@@ -1,6 +1,10 @@
 import React, { ChangeEvent, useContext, useState } from "react"; // replace existing react import
-import { FantasyMovie, GenreData } from "../types/interfaces";
-import { useQuery } from "@tanstack/react-query";
+import {
+  FantasyMovie,
+  FantasyMovieRequest,
+  GenreData,
+} from "../types/interfaces";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGenres } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import ShowHeader from "../components/showHeader";
@@ -16,6 +20,9 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { MoviesContext } from "../contexts/moviesContext";
+import { UserContext } from "../contexts/userContext";
+import { getFantasyMovies, postFantasyMovie } from "../api/aws-api";
+import FantasyMovies from "../components/fantasyMovies";
 
 const styles = {
   root: {
@@ -47,6 +54,16 @@ const styles = {
 const FantasyMoviePage: React.FC = () => {
   const navigate = useNavigate();
   const context = useContext(MoviesContext);
+  const { username } = useContext(UserContext);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (request: FantasyMovieRequest) => {
+      return postFantasyMovie(request, username);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fantasyMovies", username] });
+    },
+  });
   const [genre, setGenre] = useState(28);
   const [open, setOpen] = useState(false);
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>({
@@ -85,6 +102,7 @@ const FantasyMoviePage: React.FC = () => {
   const onSubmit: SubmitHandler<FantasyMovie> = (data) => {
     data.genre = genre;
     context.addFantasyMovie(data);
+    mutation.mutate(data);
     setOpen(true);
   };
 
@@ -289,6 +307,7 @@ const FantasyMoviePage: React.FC = () => {
           </Box>
         </form>
       </Box>
+      <FantasyMovies />
     </>
   );
 };
