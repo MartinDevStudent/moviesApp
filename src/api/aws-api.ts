@@ -1,17 +1,12 @@
-//import { APIConfig } from "../../config";
+import { APIConfig } from "../../config";
 import {
   CreateMovieReviewRequest,
   FantasyMovieRequest,
   LoginRequest,
 } from "../types/interfaces";
 
-//const baseUrl = APIConfig.API.endpoints[0].endpoint;
-const baseUrl = "https://6amiayzia7.execute-api.eu-west-1.amazonaws.com/dev/";
-const authBaseUrl =
-  "https://bou6hlnvba.execute-api.eu-west-1.amazonaws.com/prod/";
-
 export const getAwsMovieReviews = (id: number) => {
-  return fetch(baseUrl + `movies/${id}/reviews`)
+  return fetch(APIConfig.API.endpoints[0].endpoint + `movies/${id}/reviews`)
     .then((response) => {
       if (!response.ok)
         throw new Error(
@@ -25,17 +20,20 @@ export const getAwsMovieReviews = (id: number) => {
 };
 
 export const postMovieReview = (request: CreateMovieReviewRequest) => {
-  return fetch(baseUrl + `movies/${request.movieId}/reviews`, {
-    method: "POST",
-    body: JSON.stringify(request),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  }).then((response) => response.json());
+  return fetch(
+    APIConfig.API.endpoints[0].endpoint + `movies/${request.movieId}/reviews`,
+    {
+      method: "POST",
+      body: JSON.stringify(request),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  ).then((response) => response.json());
 };
 
 export const getToken = (request: LoginRequest) => {
-  return fetch(`${authBaseUrl}auth/signin`, {
+  return fetch(APIConfig.API.endpoints[1].endpoint + `auth/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -51,7 +49,9 @@ export const getToken = (request: LoginRequest) => {
 };
 
 export const getFantasyMovies = (username: string) => {
-  return fetch(baseUrl + `fantasyMovies/${username}`)
+  return fetch(
+    APIConfig.API.endpoints[0].endpoint + `fantasyMovies/${username}`
+  )
     .then((response) => {
       if (!response.ok)
         throw new Error(
@@ -68,11 +68,14 @@ export const postFantasyMovie = (
   request: FantasyMovieRequest,
   username: string
 ) => {
-  return fetch(baseUrl + `fantasyMovies/${username}`, {
-    method: "POST",
-    body: JSON.stringify(request),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  }).then((response) => response.json());
+  return fetch(
+    APIConfig.API.endpoints[0].endpoint + `fantasyMovies/${username}`,
+    {
+      method: "POST",
+      body: JSON.stringify(request),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  ).then((response) => response.json());
 };
