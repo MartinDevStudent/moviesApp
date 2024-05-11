@@ -18,9 +18,8 @@ import Alert from "@mui/material/Alert";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postMovieReview } from "../../api/aws-api";
 
-const queryClient = useQueryClient();
-
 const ReviewForm: React.FC<MovieT> = (props) => {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (request: CreateMovieReviewRequest) => {
       return postMovieReview(request);
@@ -35,7 +34,6 @@ const ReviewForm: React.FC<MovieT> = (props) => {
       review: "",
       agree: false,
       rating: 3,
-      movieId: props.id,
     },
   };
 
@@ -61,7 +59,7 @@ const ReviewForm: React.FC<MovieT> = (props) => {
 
   const onSubmit: SubmitHandler<Review> = (data) => {
     const request = {
-      movieId: Number(data.id),
+      movieId: Number(props.id),
       reviewerName: data.author,
       content: data.content,
       rating: data.rating,
@@ -69,7 +67,6 @@ const ReviewForm: React.FC<MovieT> = (props) => {
 
     mutation.mutate(request);
     setOpen(true); // NEW
-    // console.log(review);
   };
 
   return (
