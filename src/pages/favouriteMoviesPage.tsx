@@ -74,7 +74,7 @@ const FavouriteMoviesPage: React.FC = () => {
               movie={m as ListedMovie}
               action={(movie: ListedMovie) => (
                 <>
-                  <RemoveFromFavourites {...movie} />
+                  <RemoveFromFavourites movie={movie} />
                   <WriteReview {...movie} />
                 </>
               )}

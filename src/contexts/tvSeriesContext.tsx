@@ -4,10 +4,10 @@ import { ListedTvSeries, MovieT, Review } from "../types/interfaces";
 interface TvSeriesContextInterface {
   favourites: number[];
   addToFavourites: (tvSeries: ListedTvSeries) => void;
-  removeFromFavourites: (movie: ListedTvSeries) => void;
+  removeFromFavourites: (tvSeries: ListedTvSeries) => void;
   mustWatch: number[];
-  addToMustWatch: (movie: ListedTvSeries) => void;
-  addReview: (movie: MovieT, review: Review) => void; // NEW
+  addToMustWatch: (tvSeries: ListedTvSeries) => void;
+  addReview: (tvSeries: MovieT, review: Review) => void; // NEW
 }
 const initialContextState: TvSeriesContextInterface = {
   favourites: [],

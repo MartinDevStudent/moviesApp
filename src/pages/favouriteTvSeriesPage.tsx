@@ -39,7 +39,7 @@ const FavouriteTvSeriesPage: React.FC = () => {
               tvSeries={t as ListedTvSeries}
               action={(tvSeries: ListedTvSeries) => (
                 <>
-                  <RemoveFromFavourites {...tvSeries} />
+                  <RemoveFromFavourites tvSeries={tvSeries} isTvSeries />
                   <WriteReview {...tvSeries} />
                 </>
               )}
