@@ -79,3 +79,15 @@ export const postFantasyMovie = (
     }
   ).then((response) => response.json());
 };
+
+export const deleteFantasyMovie = (username: string, title: string) => {
+  return fetch(
+    APIConfig.API.endpoints[0].endpoint + `fantasyMovies/${username}/${title}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  ).then((response) => response.json());
+};

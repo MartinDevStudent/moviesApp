@@ -41,10 +41,10 @@ interface FilterMoviesCardProps {
 }
 
 const FilterMoviesCard: React.FC<FilterMoviesCardProps> = (props) => {
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
-    "genres",
-    getGenres
-  );
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>({
+    queryKey: ["genres"],
+    queryFn: getGenres,
+  });
 
   if (isLoading) {
     return <Spinner />;

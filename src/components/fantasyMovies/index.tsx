@@ -1,12 +1,13 @@
 import Paper from "@mui/material/Paper";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/userContext";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getGenres } from "../../api/tmdb-api";
 import { FantasyMovie, GenreData } from "../../types/interfaces";
-import { getFantasyMovies } from "../../api/aws-api";
+import { deleteFantasyMovie, getFantasyMovies } from "../../api/aws-api";
 import Spinner from "../spinner";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -29,6 +30,15 @@ const FantasyMovies: React.FC = () => {
     queryKey: ["genres"],
     queryFn: getGenres,
   });
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (title: string) => {
+      return deleteFantasyMovie(username, title);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fantasyMovies", username] });
+    },
+  });
 
   const {
     data: movieData,
@@ -44,6 +54,10 @@ const FantasyMovies: React.FC = () => {
   const genres = data ? data.genres : [];
   const fantasyMovies = movieData ? (movieData.data as FantasyMovie[]) : [];
 
+  const handleDelete = (title: string) => {
+    mutation.mutate(title);
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -58,7 +72,7 @@ const FantasyMovies: React.FC = () => {
         Fantasy Movies
       </Typography>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }} aria-label="fantasy movie table">
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
@@ -84,6 +98,15 @@ const FantasyMovies: React.FC = () => {
                 <TableCell align="right">{row.productionCompany}</TableCell>
                 <TableCell align="right">
                   {genres.find((x) => x.id == row.genre)?.name}
+                </TableCell>
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDelete(row.title)}
+                  >
+                    DELETE
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
