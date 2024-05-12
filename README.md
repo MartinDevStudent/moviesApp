@@ -30,3 +30,4 @@ Features include:
   - Only shown after 'login' (under the create fantasy movie form)
   - Movies are rendered into a MUI table
 - Converted the header links to a MUI dropdown
+- User can delete a fantasy movie from the dynamo db database using delete button in table
