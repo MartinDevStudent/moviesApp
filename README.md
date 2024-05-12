@@ -18,7 +18,7 @@ Features include:
 
 - Pagination for list view pages
 - Multi criteria search: Movie search form with appropriate controls/ list view for search result
-- Backend Auth API integration (login page/form with context for logged in user - shows username in header)
+- Backend Auth API integration (login page/form with context for logged in user - shows username in header, 'logout' button removes it)
 
 
 - Submitting a review persists the movie review to DynamoDB
